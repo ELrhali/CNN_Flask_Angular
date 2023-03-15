@@ -20,9 +20,10 @@ def predict():
     img = np.expand_dims(img, axis=0)
     img = preprocess_input(img)
     preds = model.predict(img)
-    label = "Mask" if preds[0][0] > preds[0][1] else "No
+    label = "Mask" if preds[0][0] > preds[0][1] else "No Mask"
+    confidence = preds[0][0] if label == "Mask" else preds[0][1]
+    response = {'prediction': label, 'confidence': float(confidence)}
+    return jsonify(response)
 
-
-
-if __name__ == "__main__":
-    app.run(debug = True)
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
